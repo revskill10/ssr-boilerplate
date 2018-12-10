@@ -25,7 +25,12 @@ module.exports = mode => {
         test: /\.jsx?$/,
         loader: 'babel-loader',
         exclude: /node_modules/
-      }
+      },
+      {
+        test: /\.jsx?$/,
+        include: /node_modules/,
+        use: ['react-hot-loader/webpack'],
+      },
     ]
   }
 }}

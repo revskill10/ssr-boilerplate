@@ -1,6 +1,10 @@
 import Index from './components/index'
 import List from './components/list'
-
+import fetch from 'isomorphic-unfetch'
+const getText = async () => {
+  const res = await fetch('https://api.github.com/users/octocat');
+  return await res.json()
+}
 const routes = [
   {
     path: '/',
@@ -9,7 +13,10 @@ const routes = [
   },
   {
     path: '/list',
-    component: List
+    component: List,
+    getInitialProps: async (context) => {
+      context.text = await getText();
+    }
   }
 ]
 

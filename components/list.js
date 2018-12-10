@@ -1,27 +1,20 @@
 import React from "react";
-import fetch from 'isomorphic-unfetch'
+import Nav from './nav'
 
-const getText = async () => (await (await fetch('https://api.github.com/users/octocat')).text());
+
 
 export default class List extends React.Component {
-
-  state = {text: ''};
-
-  static async getInitialProps(context) {
-    context.text = await getText();
-  }
-
-  async componentWillMount() {
-    const text = await getText();
-    this.setState({text})
+  componentDidMount() {
+    console.log(this.props)
   }
   
   render() {
-    const {staticContext} = this.props;
-    let {text} = this.state;
-    if (staticContext && !text) text = staticContext.text;
+    const {text} = this.props
     return (
-      <pre>Text: {text}</pre>
+      <div>
+        <Nav />
+        {text.login}
+      </div>
     )
   }
 }
