@@ -8,6 +8,13 @@ npm run dev
 npm start
 ```
 
+## Features
+
+- Server side rendering
+- Hot module replacement
+- React Router
+- React Helmet
+
 ## Define your routes
 
 ```js

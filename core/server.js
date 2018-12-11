@@ -5,6 +5,7 @@ import {renderRoutes, matchRoutes} from 'react-router-config'
 import routes from '../routes'
 import templateFn from './template';
 import {withProps} from 'recompose'
+import {Helmet} from "react-helmet";
 
 export default (req, res) => {
   const {url} = req;
@@ -33,11 +34,14 @@ export default (req, res) => {
         {renderRoutes(routes)}
       </StaticRouter>
     );
+    const helmet = Helmet.renderStatic();
+
     const contextWithEnv = {
       ...context,
       env: process.env.NODE_ENV,
+      helmet,
     }
-    const template = templateFn(content, JSON.stringify(contextWithEnv));
+    const template = templateFn(content, contextWithEnv);
     res.send(template);
   });
 }
