@@ -1,9 +1,9 @@
 import React from 'react'
 import {hydrate} from 'react-dom'
 import BrowserRouter from 'react-router-dom/BrowserRouter'
-import {renderRoutes} from 'react-router-config'
-import routes from '../routes'
+import {renderRoutes, matchRoutes} from 'react-router-config'
 import { withProps } from 'recompose';
+import routes from '../routes'
 
 const Router = (props) => {
   const newRoutes = routes.map(r => {
@@ -23,6 +23,7 @@ const Router = (props) => {
     </BrowserRouter>
   )
 }
-const data = window.__NEXT_DATA__
-hydrate(<Router {...data} />, document.getElementById('app'))
 
+const context = window.__NEXT_DATA__
+
+hydrate(<Router {...context} />, document.getElementById('app'))

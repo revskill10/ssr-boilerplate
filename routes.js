@@ -1,10 +1,7 @@
 import Index from './components/index'
 import List from './components/list'
-import fetch from 'isomorphic-unfetch'
-const getText = async () => {
-  const res = await fetch('https://api.github.com/users/octocat');
-  return await res.json()
-}
+import {getText} from './api'
+
 const routes = [
   {
     path: '/',
