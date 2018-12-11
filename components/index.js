@@ -8,7 +8,7 @@ const Index = () => {
     <div>
       <Nav />
       Hello 1 2fdsf
-      Good!
+      Good! hgj dsdsdsd dung 23
     </div>
   )
 }

@@ -5,11 +5,17 @@ import Router from './router'
 const context = window.__NEXT_DATA__
 
 const renderApp = () => {
-  hydrate(
-    <AppContainer>
-    <Router {...context} />
-  </AppContainer>
-  , document.getElementById('app'))
+  if (context.env === 'dev') {
+    hydrate(
+      <AppContainer>
+      <Router {...context} />
+    </AppContainer>
+    , document.getElementById('app'))
+  } else {
+    hydrate(
+      <Router {...context} />
+    , document.getElementById('app'))
+  }
 }
 
 if (module.hot) {

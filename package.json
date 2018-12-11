@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node core/ssr.js"
+    "dev": "node core/ssr.js",
+    "start": "NODE_ENV=production node core/ssr.js"
   },
   "keywords": [],
   "author": "",

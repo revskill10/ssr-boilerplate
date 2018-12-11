@@ -1,6 +1,12 @@
 # ssr-boilerplate
 Simple SSR boilerplate that just works.
 
+## Usage
+
+```js
+npm run dev
+npm start
+```
 
 ## Define your routes
 
