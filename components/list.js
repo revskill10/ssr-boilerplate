@@ -25,6 +25,7 @@ export default class List extends React.Component {
       <div>
         <Nav />
         {text && text.login}
+        Hello
       </div>
     )
   }

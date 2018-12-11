@@ -1,8 +1,16 @@
 const path = require('path');
+const webpack = require('webpack')
 module.exports = mode => {
+  const entry = mode === 'development' ? {
+    index: [
+      "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
+      path.resolve(__dirname, '..', 'client.js'),
+    ]
+  } : path.resolve(__dirname, '..', 'client.js')
+  const plugins = mode === 'development' ? [new webpack.HotModuleReplacementPlugin()] : []
   return {
     mode, 
-    entry: path.resolve(__dirname, '..', 'client.js'),
+    entry,
     output: {
       path: path.resolve(__dirname, '..', 'dist'),
       publicPath: '/dist/',
@@ -26,6 +34,7 @@ module.exports = mode => {
           exclude: /node_modules/
         }        
       ]
-    }
+    },
+    plugins,
   }
 }

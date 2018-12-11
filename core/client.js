@@ -1,29 +1,18 @@
 import React from 'react'
+import { AppContainer} from 'react-hot-loader'
 import {hydrate} from 'react-dom'
-import BrowserRouter from 'react-router-dom/BrowserRouter'
-import {renderRoutes, matchRoutes} from 'react-router-config'
-import { withProps } from 'recompose';
-import routes from '../routes'
-
-const Router = (props) => {
-  const newRoutes = routes.map(r => {
-    return {
-      ...r,
-      component: withProps(old => {
-        return {
-          ...old,
-          ...props,
-        }
-      })(r.component)
-    }
-  })
-  return (
-    <BrowserRouter>
-      {renderRoutes(newRoutes)}
-    </BrowserRouter>
-  )
-}
-
+import Router from './router'
 const context = window.__NEXT_DATA__
 
-hydrate(<Router {...context} />, document.getElementById('app'))
+const renderApp = () => {
+  hydrate(
+    <AppContainer>
+    <Router {...context} />
+  </AppContainer>
+  , document.getElementById('app'))
+}
+
+if (module.hot) {
+  module.hot.accept('./router', () => renderApp())
+}
+renderApp();

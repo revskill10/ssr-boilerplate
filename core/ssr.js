@@ -5,6 +5,8 @@ const requireFromString = require('require-from-string');
 const MemoryFS = require('memory-fs');
 const serverConfig = require('./configs/server.js')(process.env.NODE_ENV || 'development');
 const fs = new MemoryFS();
+const dev = process.env.NODE_ENV !== 'production'
+const clientConfig = require('./configs/client.js')(process.env.NODE_ENV || 'development');
 const outputErrors = (err, stats) => {
   if (err) {
         console.error(err.stack || err);
@@ -22,22 +24,32 @@ const outputErrors = (err, stats) => {
       console.warn(info.warnings);
   }
 };
-const compile = require('./ssr-client')
-compile((clientBundle) => {
-  console.log('Initializing server application...');
-  const app = express();
-  console.log('Compiling bundle...');
-  const serverCompiler = webpack(serverConfig);
-  serverCompiler.outputFileSystem = fs;
-  serverCompiler.run((err, stats) => {
-      outputErrors(err, stats);
-      const contents = fs.readFileSync(path.resolve(serverConfig.output.path, serverConfig.output.filename), 'utf8');
-      const app2 = requireFromString(contents, serverConfig.output.filename);
-      app.get('/dist/client.js', (req, res) => {
-        res.send(clientBundle)
+
+console.log('Initializing server application...');
+const app = express();
+console.log('Compiling bundle...');
+const serverCompiler = webpack(serverConfig);
+const clientCompiler = webpack(clientConfig)
+serverCompiler.outputFileSystem = fs;
+serverCompiler.run((err, stats) => {
+  outputErrors(err, stats);
+  const contents = fs.readFileSync(path.resolve(serverConfig.output.path, serverConfig.output.filename), 'utf8');
+  const app2 = requireFromString(contents, serverConfig.output.filename);
+  
+  if (dev) {
+    app.use(
+      require("webpack-dev-middleware")(clientCompiler, {
+          noInfo: true,
+          publicPath: clientConfig.output.publicPath
       })
-      app.get('*', app2.default);
-      app.listen(3001);
-      console.log('Server listening on port 3001!');
-  });
-})
+    );
+    
+    app.use(require("webpack-hot-middleware")(clientCompiler));
+    // static assets
+  }
+  app.use(express.static("public"));
+  app.get('*', app2.default);
+  app.listen(3001);
+  console.log('Server listening on port 3001!');
+});
+

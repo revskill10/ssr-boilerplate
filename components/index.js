@@ -7,7 +7,8 @@ const Index = () => {
   return (
     <div>
       <Nav />
-      Hello
+      Hello 1 2fdsf
+      Good!
     </div>
   )
 }

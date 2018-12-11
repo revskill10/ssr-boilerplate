@@ -5,6 +5,7 @@ import {renderRoutes, matchRoutes} from 'react-router-config'
 import routes from '../routes'
 import templateFn from './template';
 import {withProps} from 'recompose'
+
 export default (req, res) => {
   const {url} = req;
   const matches = matchRoutes(routes, url);
@@ -32,8 +33,11 @@ export default (req, res) => {
         {renderRoutes(routes)}
       </StaticRouter>
     );
-    
-    const template = templateFn(content, JSON.stringify(context));
+    const contextWithEnv = {
+      ...context,
+      env: process.env.NODE_ENV,
+    }
+    const template = templateFn(content, JSON.stringify(contextWithEnv));
     res.send(template);
   });
 }
