@@ -7,11 +7,8 @@ Simple SSR boilerplate that just works.
 ```js
 import Index from './components/index'
 import List from './components/list'
-import fetch from 'isomorphic-unfetch'
-const getText = async () => {
-  const res = await fetch('https://api.github.com/users/octocat');
-  return await res.json()
-}
+import {getText} from './api'
+
 const routes = [
   {
     path: '/',
@@ -39,18 +36,36 @@ Note: All React components must reside inside `components` folder.
 ```js
 import React from "react";
 import Nav from './nav'
-
+import {getText} from '../api'
 export default class List extends React.Component {
-  render() {
+  async componentDidMount() {
     const {text} = this.props
+    if (!text) {
+      const tmp = await getText()
+      this.setState({
+        text: tmp
+      })
+    }
+  }
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      text: props.text
+    }
+  }
+
+  render() {
+    const {text} = this.state
     return (
       <div>
         <Nav />
-        {text.login}
+        {text && text.login}
       </div>
     )
   }
 }
+
 ```
 
 `nav.js`
