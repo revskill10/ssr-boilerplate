@@ -14,6 +14,7 @@ npm start
 - Hot module replacement
 - React Router
 - React Helmet
+- Dynamic component with `@loadable/component`
 
 ## Define your routes
 
